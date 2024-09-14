@@ -6,6 +6,7 @@ if __name__ == '__main__':
 
     pool = Pool(processes=1)
 
+    # todo
     # datasets = ['mvtec', 'visa']
     datasets = ['mvtec']
     shots = [1, 2, 4]
@@ -14,10 +15,11 @@ if __name__ == '__main__':
         for dataset in datasets:
             classes = dataset_classes[dataset]
             for cls in classes[:]:
+                # todo
                 sh_method = f'python train_cls.py ' \
                             f'--dataset {dataset} ' \
                             f'--k-shot {shot} ' \
-                            f'--class_name {"cls"} ' \
+                            f'--class_name {cls} ' \
 
                 print(sh_method)
                 pool.apply_async(os.system, (sh_method,))
