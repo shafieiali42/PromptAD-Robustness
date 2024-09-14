@@ -11,7 +11,7 @@ mvtec_classes = ['carpet']
 #                    'screw', 'toothbrush', 'transistor', 'zipper']
 
 
-MVTEC2D_DIR = './anomaly_detection/mvtec_anomaly_detection'
+MVTEC2D_DIR = './mvtec_anomaly_detection'
 
 
 def load_mvtec(category, k_shot):
