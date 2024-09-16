@@ -44,6 +44,7 @@ class PromptLearner(nn.Module):
         # random initialization
         normal_ctx_vectors = torch.empty(n_pro, n_ctx, ctx_dim, dtype=dtype)
         abnormal_ctx_vectors = torch.empty(n_pro_ab, n_ctx_ab, ctx_dim, dtype=dtype)
+        print(f"Shape of normal_ctx_vectors : {normal_ctx_vectors.shape} ")
 
         nn.init.normal_(normal_ctx_vectors, std=0.02)
         nn.init.normal_(abnormal_ctx_vectors, std=0.02)
@@ -201,6 +202,8 @@ class PromptAD(torch.nn.Module):
         assert pretrained_dataset in valid_pretrained_datasets
 
         model, _, _ = CLIPAD.create_model_and_transforms(model_name=backbone, pretrained=pretrained_dataset, precision = self.precision)
+        print(f"modelname : {backbone}")
+        print(model)
         tokenizer = CLIPAD.get_tokenizer(backbone)
         model.eval()
 

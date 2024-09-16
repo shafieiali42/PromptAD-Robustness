@@ -141,6 +141,7 @@ def create_model(
         device = torch.device(device)
 
     if pretrained and pretrained.lower() == 'openai':
+        print(f'Loading pretrained {model_name} from OpenAI.')
         logging.info(f'Loading pretrained {model_name} from OpenAI.')
         model = load_openai_model(
             model_name,
