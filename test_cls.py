@@ -25,7 +25,8 @@ def test(model,
     # change the model into eval mode
     model.eval_mode()
 
-    model.load_state_dict(torch.load(check_path), strict=False)
+    ##TODO
+    # model.load_state_dict(torch.load(check_path), strict=False)
 
     scores_img = []
     score_maps = []
@@ -38,6 +39,14 @@ def test(model,
 
         data = [model.transform(Image.fromarray(f.numpy())) for f in data]
         data = torch.stack(data, dim=0)
+
+        print(label)
+        print("-"*80)
+        print(name)
+        print("-"*80)
+        print(img_type)
+        print("-"*80)
+        
 
         for d, n, l, m in zip(data, name, label, mask):
             test_imgs += [denormalization(d.cpu().numpy())]
@@ -56,6 +65,10 @@ def test(model,
 
     test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list,
                                                              resolution=(args.resolution, args.resolution))
+    
+    print(scores_img)
+    print("-"*80)
+    print(score_maps)
     result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps))
 
     return result_dict

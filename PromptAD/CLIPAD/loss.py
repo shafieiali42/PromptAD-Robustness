@@ -11,7 +11,7 @@ except ImportError:
     has_distributed = False
 
 try:
-    import horovod.torch as hvd
+    import horovod.torch as hvd # type: ignore
 except ImportError:
     hvd = None
 

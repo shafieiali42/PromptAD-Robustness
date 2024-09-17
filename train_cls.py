@@ -183,7 +183,7 @@ def main(args):
 
     # get the model
     model = PromptAD(**kwargs)
-    model = model.to(device)
+    model = model.to(device) 
 
     # as the pro metric calculation is costly, we only calculate it in the last evaluation
     metrics = fit(model, args, test_dataloader, device, check_path=check_path, train_data=train_dataloader)
@@ -254,4 +254,5 @@ if __name__ == '__main__':
     args = get_args()
     os.environ['CURL_CA_BUNDLE'] = ''
     os.environ['CUDA_VISIBLE_DEVICES'] = f"{args.gpu_id}"
+    print("Start")
     main(args)

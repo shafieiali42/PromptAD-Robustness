@@ -40,6 +40,7 @@ class PromptLearner(nn.Module):
             classname = class_mapping[classname]
 
         ctx_dim = clip_model.ln_final.weight.shape[0]
+        #Default value of ctx_dim: 640
 
         # random initialization
         normal_ctx_vectors = torch.empty(n_pro, n_ctx, ctx_dim, dtype=dtype)
@@ -68,11 +69,30 @@ class PromptLearner(nn.Module):
         tokenized_normal_prompts = CLIPAD.tokenize(normal_prompts)
         tokenized_abnormal_prompts_handle = torch.cat([CLIPAD.tokenize(p) for p in abnormal_prompts_handle])
         tokenized_abnormal_prompts_learned = torch.cat([CLIPAD.tokenize(p) for p in abnormal_prompts_learned])
+        # print(tokenized_normal_prompts.shape)
+        # print(tokenized_normal_prompts[0])
+        # print("-"*80)
+        # print(tokenized_abnormal_prompts_handle.shape)
+        # print(tokenized_abnormal_prompts_handle[0])
+        # print("-"*80)
+        # print(tokenized_abnormal_prompts_learned.shape)
+        # print(tokenized_abnormal_prompts_learned[0])
+
 
         with torch.no_grad():
             normal_embedding = clip_model.token_embedding(tokenized_normal_prompts).type(dtype)
             abnormal_embedding_handle = clip_model.token_embedding(tokenized_abnormal_prompts_handle).type(dtype)
             abnormal_embedding_learned = clip_model.token_embedding(tokenized_abnormal_prompts_learned).type(dtype)
+
+        # print(normal_embedding[:, :1, :].shape)
+        # print(normal_embedding[:, 1 + n_ctx:, :].shape)
+        # print("-"*80)
+        # print(abnormal_embedding_handle[:, :1, :].shape)
+        # print(abnormal_embedding_handle[:, 1 + n_ctx:, :].shape)
+        # print("-"*80)
+        # print(abnormal_embedding_learned[:, :1, :].shape)
+        # print(abnormal_embedding_learned[:, 1 + n_ctx + n_ctx_ab:, :].shape)
+
 
         # These token vectors will be saved when in save_model(),
         # but they should be ignored in load_model() as we want to use
@@ -113,6 +133,8 @@ class PromptLearner(nn.Module):
             ],
             dim=1,
         )
+
+        
 
         # handle abnormal prompt
         n_ab_handle = self.n_ab_handle
@@ -209,6 +231,7 @@ class PromptAD(torch.nn.Module):
 
         self.prompt_learner = PromptLearner(n_ctx, n_pro, n_ctx_ab, n_pro_ab, class_name, model, self.precision)
         self.model = model.to(self.device)
+      
 
         self.tokenizer = tokenizer
         self.normal_text_features = None
