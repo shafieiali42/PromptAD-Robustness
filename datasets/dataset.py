@@ -13,12 +13,16 @@ class CLIPDataset(Dataset):
         self.phase = phase
 
         self.category = category
-        self.corruption_func=getattr(corruption,corruption_func)
-        self.severity=severity
+        self.corruption_func=None
+        self.severity=None
+
+        if corruption_func is not None:
+            self.corruption_func=getattr(corruption,corruption_func)
+            self.severity=severity
         # load datasets
         self.img_paths, self.gt_paths, self.labels, self.types = self.load_dataset(k_shot)  # self.labels => good : 0, anomaly : 1
 
-    def load_dataset(self, k_shot):
+    def load_dataset(self, k_shot):  
 
         (train_img_tot_paths, train_gt_tot_paths, train_tot_labels, train_tot_types), \
         (test_img_tot_paths, test_gt_tot_paths, test_tot_labels, test_tot_types) = self.load_function(self.category,
@@ -41,6 +45,7 @@ class CLIPDataset(Dataset):
         corrupted_image=None
         if self.corruption_func!= None:
             corrupted_image=corrupt_image(img,self.corruption_func,severity=self.severity)
+            img=corrupted_image
             
 
         
@@ -58,4 +63,4 @@ class CLIPDataset(Dataset):
         img_name = f'{self.category}-{img_type}-{os.path.basename(img_path[:-4])}'
 
         # return img, gt, label, img_name, img_type
-        return corrupted_image, gt, label, img_name, img_type
+        return img, gt, label, img_name, img_type
