@@ -24,13 +24,15 @@ def denormalization(x):
     x = (((x.transpose(1, 2, 0) * std_train) + mean_train) * 255.).astype(np.uint8)
     return x
 
-def get_dataloader_from_args(phase, **kwargs):
+def get_dataloader_from_args(phase,corruption_func=None,severity=None, **kwargs):
 
     dataset_inst = CLIPDataset(
         load_function=load_function_dict[kwargs['dataset']],
         category=kwargs['class_name'],
         phase=phase,
-        k_shot=kwargs['k_shot']
+        k_shot=kwargs['k_shot'],
+        corruption_func=corruption_func,
+        severity=severity
     )
 
     if phase == 'train':

@@ -11,9 +11,9 @@ corruption_list = [gaussian_noise, shot_noise, impulse_noise, defocus_blur,
 
 
 def corrupt_image(image,corruption_func,severity):
-    corrupted_image=corruption_func(image,severity=5)
-    print(corrupted_image)
-    print("--"*80)
+    corrupted_image=corruption_func(image,severity=severity)
+    # print(corrupted_image)
+    # print("--"*80)
     corrupted_image=np.uint8(corrupted_image)
-    print(corrupted_image)
+    # print(corrupted_image)
     return corrupted_image 

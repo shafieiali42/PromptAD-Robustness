@@ -3,16 +3,18 @@ import os
 import cv2
 import numpy as np
 from torch.utils.data import Dataset
+from Corruption import *
 
 
 class CLIPDataset(Dataset):
-    def __init__(self, load_function, category, phase, k_shot):
+    def __init__(self, load_function, category, phase, k_shot,corruption_func=None,severity=None):
 
         self.load_function = load_function
         self.phase = phase
 
         self.category = category
-
+        self.corruption_func=corruption_func
+        self.severity=severity
         # load datasets
         self.img_paths, self.gt_paths, self.labels, self.types = self.load_dataset(k_shot)  # self.labels => good : 0, anomaly : 1
 
@@ -36,6 +38,13 @@ class CLIPDataset(Dataset):
     def __getitem__(self, idx):
         img_path, gt, label, img_type = self.img_paths[idx], self.gt_paths[idx], self.labels[idx], self.types[idx]
         img = cv2.imread(img_path, cv2.IMREAD_COLOR)
+        corrupted_image=None
+        if self.corruption!= None:
+            corrupted_image=corrupt_image(img,self.corruption_func,severity=self.severity)
+            
+
+        
+
 
         if gt == 0:
             gt = np.zeros([img.shape[0], img.shape[0]])
@@ -48,4 +57,5 @@ class CLIPDataset(Dataset):
 
         img_name = f'{self.category}-{img_type}-{os.path.basename(img_path[:-4])}'
 
-        return img, gt, label, img_name, img_type
+        # return img, gt, label, img_name, img_type
+        return corrupted_image, gt, label, img_name, img_type

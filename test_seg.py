@@ -77,7 +77,7 @@ def main(args):
     img_dir, csv_path, check_path = get_dir_from_args(TASK, **kwargs)
 
     # get the test dataloader
-    test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test', perturbed=False, **kwargs)
+    test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test', corruption_func=None,severity=None,perturbed=False, **kwargs)
 
     kwargs['out_size_h'] = kwargs['resolution']
     kwargs['out_size_w'] = kwargs['resolution']

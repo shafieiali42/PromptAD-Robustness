@@ -23,5 +23,7 @@ seaborn
 open_clip_torch
 SciencePlots
 timm
+pillow
+numba
 
 
