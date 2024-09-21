@@ -25,8 +25,8 @@ def test(model,
     # change the model into eval mode
     model.eval_mode()
 
-    ##TODO
-    # model.load_state_dict(torch.load(check_path), strict=False)
+    #TODO
+    model.load_state_dict(torch.load(check_path), strict=False)
 
     scores_img = []
     score_maps = []
@@ -34,18 +34,23 @@ def test(model,
     gt_list = []
     gt_mask_list = []
     names = []
+    all_names=[]
+    all_types=[]
+    all_labels=[]
+    
 
     for (data, mask, label, name, img_type) in dataloader:
 
         data = [model.transform(Image.fromarray(f.numpy())) for f in data]
         data = torch.stack(data, dim=0)
 
-        print(label)
-        print("-"*80)
-        print(name)
-        print("-"*80)
-        print(img_type)
-        print("-"*80)
+
+
+        all_names=all_names+name.tolist()
+        all_types=all_types+list(img_type)
+        all_labels=all_labels+list(label)
+
+        
         
 
         for d, n, l, m in zip(data, name, label, mask):
@@ -66,10 +71,16 @@ def test(model,
     test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list,
                                                              resolution=(args.resolution, args.resolution))
     
-    print(scores_img)
-    print("-"*80)
-    print(score_maps)
+
     result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps))
+    for i in range(len(all_labels)):
+        if all_labels[i]==0:
+            print(f"name: {all_names[i]}, type: {all_types[i]}, label: {all_labels[i]}, Score: {scores_img[i]}")
+    
+    print("-"*80)
+    for i in range(len(all_labels)):
+        if all_labels[i]==1:
+            print(f"name: {all_names[i]}, type: {all_types[i]}, label: {all_labels[i]}, Score: {scores_img[i]}")
 
     return result_dict
 
