@@ -4,13 +4,13 @@ import random
 
 
 
-mvtec_classes = ['carpet']
+# mvtec_classes = ['carpet']
 
 # todo 
 
-# mvtec_classes = ['carpet', 'grid', 'leather', 'tile', 'wood',
-#                    'bottle', 'cable', 'capsule', 'hazelnut', 'metal_nut', 'pill',
-#                    'screw', 'toothbrush', 'transistor', 'zipper']
+mvtec_classes = ['carpet', 'grid', 'leather', 'tile', 'wood',
+                   'bottle', 'cable', 'capsule', 'hazelnut', 'metal_nut', 'pill',
+                   'screw', 'toothbrush', 'transistor', 'zipper']
 
 
 MVTEC2D_DIR = './mvtec_anomaly_detection'

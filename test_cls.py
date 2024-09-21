@@ -46,7 +46,7 @@ def test(model,
 
 
 
-        all_names=all_names+name.tolist()
+        all_names=all_names+list(name)
         all_types=all_types+list(img_type)
         all_labels=all_labels+list(label)
 
@@ -104,7 +104,7 @@ def main(args):
 
     # get the test dataloader
     if kwargs["corrupt"]:
-        test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test',corruption_func=kwargs["corruption"],severity=kwargs["severity"], perturbed=False, **kwargs)
+        test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test',corruption_func=kwargs['corruption'],severity=kwargs['severity'], perturbed=False, **kwargs)
     else:
         test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test',corruption_func=None,severity=None, perturbed=False, **kwargs)
 
@@ -168,7 +168,7 @@ def get_args():
     # Corruption
     parser.add_argument("--corrupt", type=str2bool, choices=[True, False], default=False)
     parser.add_argument("--corruption", type=str, default="gaussian_noise")
-    parser.add_argument("--severity", type=int, default="1")
+    parser.add_argument("--severity", type=int, default=1)
 
 
     args = parser.parse_args()

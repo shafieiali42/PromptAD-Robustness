@@ -1,4 +1,4 @@
-from corruption import *
+from .corruption import *
 
 corruption_list = [gaussian_noise, shot_noise, impulse_noise, defocus_blur,
                     glass_blur, motion_blur, zoom_blur, snow, frost, fog, contrast,spatter,

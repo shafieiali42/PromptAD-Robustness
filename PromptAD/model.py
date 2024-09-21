@@ -224,8 +224,8 @@ class PromptAD(torch.nn.Module):
         assert pretrained_dataset in valid_pretrained_datasets
 
         model, _, _ = CLIPAD.create_model_and_transforms(model_name=backbone, pretrained=pretrained_dataset, precision = self.precision)
-        print(f"modelname : {backbone}")
-        print(model)
+        # print(f"modelname : {backbone}")
+        # print(model)
         tokenizer = CLIPAD.get_tokenizer(backbone)
         model.eval()
 
