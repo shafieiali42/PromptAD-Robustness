@@ -1,2 +1,4 @@
 mvtec_anomaly_detection/*
 *.pyc
+corrupted.jpg
+test_mvtex.py
