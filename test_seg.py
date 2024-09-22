@@ -77,7 +77,11 @@ def main(args):
     img_dir, csv_path, check_path = get_dir_from_args(TASK, **kwargs)
 
     # get the test dataloader
-    test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test', corruption_func=None,severity=None,perturbed=False, **kwargs)
+    if kwargs["corrupt"]:
+        test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test',corruption_func=kwargs['corruption'],severity=kwargs['severity'], perturbed=False, **kwargs)
+    else:
+        test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test',corruption_func=None,severity=None, perturbed=False, **kwargs)
+
 
     kwargs['out_size_h'] = kwargs['resolution']
     kwargs['out_size_w'] = kwargs['resolution']
@@ -104,7 +108,7 @@ def str2bool(v):
 def get_args():
     parser = argparse.ArgumentParser(description='Anomaly detection')
     parser.add_argument('--dataset', type=str, default='mvtec', choices=['mvtec', 'visa'])
-    parser.add_argument('--class_name', type=str, default='transistor')
+    parser.add_argument('--class_name', type=str, default='carpet')
 
     parser.add_argument('--img-resize', type=int, default=240)
     parser.add_argument('--img-cropsize', type=int, default=240)
@@ -135,6 +139,11 @@ def get_args():
     parser.add_argument("--n_ctx_ab", type=int, default=1)
     parser.add_argument("--n_pro", type=int, default=1)
     parser.add_argument("--n_pro_ab", type=int, default=4)
+
+    # Corruption
+    parser.add_argument("--corrupt", type=str2bool, choices=[True, False], default=False)
+    parser.add_argument("--corruption", type=str, default="gaussian_noise")
+    parser.add_argument("--severity", type=int, default=1)
 
     args = parser.parse_args()
 

@@ -36,8 +36,8 @@ def fit(model,
         ):
 
     # change the model into eval mode
+    
     model.eval_mode()
-
     features1 = []
     features2 = []
     for (data, mask, label, name, img_type) in train_data:
@@ -182,6 +182,7 @@ def main(args):
 
     # get the model
     model = PromptAD(**kwargs)
+   
     model = model.to(device)
 
     # as the pro metric calculation is costly, we only calculate it in the last evaluation
