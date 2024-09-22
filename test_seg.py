@@ -78,9 +78,9 @@ def main(args):
 
     # get the test dataloader
     if kwargs["corrupt"]:
-        test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test',corruption_func=kwargs['corruption'],severity=kwargs['severity'], perturbed=False, **kwargs)
+        test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test',corruption_func=kwargs['corruption'],severity_level=kwargs['severity'], perturbed=False, **kwargs)
     else:
-        test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test',corruption_func=None,severity=None, perturbed=False, **kwargs)
+        test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test',corruption_func=None,severity_level=None, perturbed=False, **kwargs)
 
 
     kwargs['out_size_h'] = kwargs['resolution']

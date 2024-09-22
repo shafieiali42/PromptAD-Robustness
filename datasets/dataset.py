@@ -19,6 +19,9 @@ class CLIPDataset(Dataset):
         if corruption_func is not None:
             self.corruption_func=getattr(corruption,corruption_func)
             self.severity=severity
+        
+        print(f"Corruption type: {corruption_func}")
+        print(f"severity: {self.severity}")
         # load datasets
         self.img_paths, self.gt_paths, self.labels, self.types = self.load_dataset(k_shot)  # self.labels => good : 0, anomaly : 1
 
