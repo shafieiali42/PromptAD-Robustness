@@ -7,8 +7,8 @@ if __name__ == '__main__':
     pool = Pool(processes=1)
 
     # todo
-    # datasets = ['mvtec', 'visa']
-    datasets = ['mvtec']
+    datasets = ['mvtec', 'visa']
+    # datasets = ['mvtec']
     shots = [1, 2, 4]
 
     for shot in shots:
