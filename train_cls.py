@@ -58,7 +58,11 @@ def fit(model,
     criterion_tip = TripletLoss(margin=0.0)
 
     best_result_dict = None
+    tst_ldr = [(torch.stack([model.transform(Image.fromarray(f.numpy())) for f in bt[0]], dim=0),
+                 bt[1], bt[2], bt[3],  bt[4]) for bt in dataloader] 
+    
     for epoch in range(args.Epoch):
+
         for (data, mask, label, name, img_type) in train_data:
             data = [model.transform(Image.fromarray(cv2.cvtColor(f.numpy(), cv2.COLOR_BGR2RGB))) for f in data]
             data = torch.stack(data, dim=0).to(device)
@@ -111,46 +115,48 @@ def fit(model,
 
             loss.backward()
             optimizer.step()
+        
         scheduler.step()
         model.build_text_feature_gallery()
 
-        scores_img = []
-        score_maps = []
-        test_imgs = []
-        gt_list = []
-        gt_mask_list = []
-        names = []
+        if epoch%2==0:
+            scores_img = []
+            score_maps = []
+            test_imgs = []
+            gt_list = []
+            gt_mask_list = []
+            names = []         
+            with torch.no_grad():
+                for (data, mask, label, name, img_type) in tst_ldr:
 
-        for (data, mask, label, name, img_type) in dataloader:
+                    # data = [model.transform(Image.fromarray(f.numpy())) for f in data]
+                    # data = torch.stack(data, dim=0)
 
-            data = [model.transform(Image.fromarray(f.numpy())) for f in data]
-            data = torch.stack(data, dim=0)
+                    for d, n, l, m in zip(data, name, label, mask):
+                        test_imgs += [denormalization(d.cpu().numpy())]
+                        l = l.numpy()
+                        m = m.numpy()
+                        m[m > 0] = 1
 
-            for d, n, l, m in zip(data, name, label, mask):
-                test_imgs += [denormalization(d.cpu().numpy())]
-                l = l.numpy()
-                m = m.numpy()
-                m[m > 0] = 1
+                        names += [n]
+                        gt_list += [l]
+                        gt_mask_list += [m]
 
-                names += [n]
-                gt_list += [l]
-                gt_mask_list += [m]
+                    data = data.to(device)
+                    score_img, score_map = model(data, 'cls')
+                    score_maps += score_map
+                    scores_img += score_img
 
-            data = data.to(device)
-            score_img, score_map = model(data, 'cls')
-            score_maps += score_map
-            scores_img += score_img
+                test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list, resolution=(args.resolution, args.resolution))
+                result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps))
 
-        test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list, resolution=(args.resolution, args.resolution))
-        result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps))
+                if best_result_dict is None:
+                    save_check_point(model, check_path)
+                    best_result_dict = result_dict
 
-        if best_result_dict is None:
-            save_check_point(model, check_path)
-            best_result_dict = result_dict
-
-        elif best_result_dict['i_roc'] < result_dict['i_roc']:
-            save_check_point(model, check_path)
-            best_result_dict = result_dict
+                elif best_result_dict['i_roc'] < result_dict['i_roc']:
+                    save_check_point(model, check_path)
+                    best_result_dict = result_dict
 
     return best_result_dict
 
@@ -233,7 +239,7 @@ def get_args():
     parser.add_argument("--n_ctx_ab", type=int, default=1)
     parser.add_argument("--n_pro", type=int, default=3)
     parser.add_argument("--n_pro_ab", type=int, default=4)
-    parser.add_argument("--Epoch", type=int, default=100)
+    parser.add_argument("--Epoch", type=int, default=50)
 
     # optimizer
     parser.add_argument("--lr", type=float, default=0.002)

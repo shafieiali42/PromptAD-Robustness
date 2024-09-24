@@ -32,3 +32,7 @@ print(image.shape)
 # a=np.uint8(gaussian_noise(Image.fromarray(image),severity=5))
 # print(a)
 # cv.imwrite("corruped.jpg",a)
+
+# tst_ldr = [(torch.stack([model.transform(Image.fromarray(f.numpy())) for f in bt[0]], 
+#                         dim=0), bt[1], bt[2], bt[3],  bt[4]) for bt in dataloader] 
+# There is no point in random shuffle on test loader ... better to be list if no augmentation
