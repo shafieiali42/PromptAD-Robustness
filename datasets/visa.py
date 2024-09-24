@@ -6,7 +6,7 @@ visa_classes = ['candle', 'capsules', 'cashew', 'chewinggum',
                    'fryum', 'macaroni1', 'macaroni2',
                 'pcb1', 'pcb2', 'pcb3','pcb4', 'pipe_fryum']
 
-VISA_DIR = './ViSA_anomaly_detection/split_csv/1cls'
+VISA_DIR = './ViSA_anomaly_detection/VisA_pytorch/1cls'
 
 
 def load_visa(category, k_shot):
@@ -16,6 +16,8 @@ def load_visa(category, k_shot):
         tot_labels = []
         tot_types = []
 
+        print(root_path)
+        exit()
         defect_types = os.listdir(root_path)
 
         for defect_type in defect_types:
