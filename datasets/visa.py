@@ -16,8 +16,7 @@ def load_visa(category, k_shot):
         tot_labels = []
         tot_types = []
 
-        print(root_path)
-        exit()
+
         defect_types = os.listdir(root_path)
 
         for defect_type in defect_types:
