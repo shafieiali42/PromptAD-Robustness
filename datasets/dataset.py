@@ -48,6 +48,7 @@ class CLIPDataset(Dataset):
         corrupted_image=img
         if self.corruption_func!= None:
             corrupted_image=corrupt_image(img,self.corruption_func,severity=self.severity)
+            img=corrupted_image
             
 
         

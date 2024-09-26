@@ -63,7 +63,8 @@ def fit(model,
     
     for epoch in range(args.Epoch):
 
-        for (data, mask, label, name, img_type) in train_data:
+        for (data, mask, label, name, img_type,corrupted_image) in train_data:
+
             data = [model.transform(Image.fromarray(cv2.cvtColor(f.numpy(), cv2.COLOR_BGR2RGB))) for f in data]
             data = torch.stack(data, dim=0).to(device)
 
