@@ -149,7 +149,7 @@ def fit(model,
                     scores_img += score_img
 
                 test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list, resolution=(args.resolution, args.resolution))
-                result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps),result_key_name="i_roc")
+                result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps),result_key_name="i_roc",map_scores=None)
 
                 if best_result_dict is None:
                     save_check_point(model, check_path)
