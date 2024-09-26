@@ -59,7 +59,7 @@ def fit(model,
 
     best_result_dict = None
     tst_ldr = [(torch.stack([model.transform(Image.fromarray(f.numpy())) for f in bt[0]], dim=0),
-                 bt[1], bt[2], bt[3],  bt[4]) for bt in dataloader] 
+                 bt[1], bt[2], bt[3],  bt[4], bt[5]) for bt in dataloader] 
     
     for epoch in range(args.Epoch):
 
