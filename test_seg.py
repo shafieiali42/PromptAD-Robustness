@@ -50,7 +50,7 @@ def test(model,
         score_maps += score_map
 
     test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list, resolution=(args.resolution, args.resolution))
-    result_dict = metric_cal_pix(np.array(score_maps), gt_mask_list,result_key_name="p_roc")
+    result_dict = metric_cal_pix(np.array(score_maps), gt_mask_list,"p_roc")
 
     torch.save(model.state_dict(), check_path)
     if args.vis:

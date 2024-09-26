@@ -72,7 +72,7 @@ def test(model,
                                                              resolution=(args.resolution, args.resolution))
     
 
-    result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps),result_key_name="i_roc",map_scores= None)
+    result_dict = metric_cal_img(np.array(scores_img), gt_list,"i_roc",np.array(score_maps))
     # for i in range(len(all_labels)):
     #     if all_labels[i]==0:
     #         print(f"name: {all_names[i]}, type: {all_types[i]}, label: {all_labels[i]}, Score: {scores_img[i]}")
