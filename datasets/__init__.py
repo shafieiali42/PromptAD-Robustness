@@ -36,19 +36,19 @@ def get_dataloader_from_args(phase,corruption_func=None,severity_level=None, **k
     )
 
 
-    from PIL import Image
-    import random
-    random_indx=random.randint(0,len(dataset_inst))
-    random_indx=87
-    image = Image.fromarray(dataset_inst[random_indx][0][:,:,::-1])
-    print(dataset_inst[random_indx][0][:,:,::-1].dtype)
-    image.save(f'test_result/image_{random_indx}.png')
-    corrupted = Image.fromarray(dataset_inst[random_indx][5][:,:,::-1])
-    print(dataset_inst[random_indx][5][::,::-1].dtype)
-    corrupted.save(f'test_result/corrupted_{random_indx}_severity{severity_level}.png')
-    image = Image.fromarray(dataset_inst[random_indx][1])
-    image.save(f'test_result/gt_{random_indx}_{dataset_inst[random_indx][4]}.png')
-    exit()
+    # from PIL import Image
+    # import random
+    # random_indx=random.randint(0,len(dataset_inst))
+    # random_indx=87
+    # image = Image.fromarray(dataset_inst[random_indx][0][:,:,::-1])
+    # print(dataset_inst[random_indx][0][:,:,::-1].dtype)
+    # image.save(f'test_result/image_{random_indx}.png')
+    # corrupted = Image.fromarray(dataset_inst[random_indx][5][:,:,::-1])
+    # print(dataset_inst[random_indx][5][::,::-1].dtype)
+    # corrupted.save(f'test_result/corrupted_{random_indx}_severity{severity_level}.png')
+    # image = Image.fromarray(dataset_inst[random_indx][1])
+    # image.save(f'test_result/gt_{random_indx}_{dataset_inst[random_indx][4]}.png')
+    # exit()
 
     if phase == 'train':
         data_loader = DataLoader(dataset_inst, batch_size=kwargs['batch_size'], shuffle=True,
