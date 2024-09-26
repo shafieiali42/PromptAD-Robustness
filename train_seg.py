@@ -59,7 +59,7 @@ def fit(model,
 
     best_result_dict = None
     for epoch in range(args.Epoch):
-        for (data, mask, label, name, img_type) in train_data:
+        for (data, mask, label, name, img_type,corrupted_image) in train_data:
             data = [model.transform(Image.fromarray(cv2.cvtColor(f.numpy(), cv2.COLOR_BGR2RGB))) for f in data]
             data = torch.stack(data, dim=0).to(device)
 
@@ -173,7 +173,6 @@ def main(args):
 
     # get the train dataloader
     train_dataloader, train_dataset_inst = get_dataloader_from_args(phase='train', corruption_func=None,severity_level=None,perturbed=False, **kwargs)
-
     # get the test dataloader
     test_dataloader, test_dataset_inst = get_dataloader_from_args(phase='test',corruption_func=None,severity_level=None, perturbed=False, **kwargs)
 
