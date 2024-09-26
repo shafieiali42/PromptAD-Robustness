@@ -25,7 +25,7 @@ def test(model,
     # change the model into eval mode
     model.eval_mode()
 
-    #TODO
+  
     model.load_state_dict(torch.load(check_path), strict=False)
 
     scores_img = []
@@ -39,7 +39,7 @@ def test(model,
     all_labels=[]
     
 
-    for (data, mask, label, name, img_type) in dataloader:
+    for (data, mask, label, name, img_type,corrupted_image) in dataloader:
 
         data = [model.transform(Image.fromarray(f.numpy())) for f in data]
         data = torch.stack(data, dim=0)
@@ -72,7 +72,7 @@ def test(model,
                                                              resolution=(args.resolution, args.resolution))
     
 
-    result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps))
+    result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps),result_key_name="i_roc")
     # for i in range(len(all_labels)):
     #     if all_labels[i]==0:
     #         print(f"name: {all_names[i]}, type: {all_types[i]}, label: {all_labels[i]}, Score: {scores_img[i]}")
@@ -118,12 +118,12 @@ def main(args):
     # as the pro metric calculation is costly, we only calculate it in the last evaluation
     metrics = test(model, args, test_dataloader, device, img_dir=img_dir, check_path=check_path)
 
-    p_roc = round(metrics['i_roc'], 2)
+    i_roc = round(metrics['i_roc'], 2)
     object = kwargs['class_name']
-    print(f'Object:{object} =========================== Pixel-AUROC:{p_roc}\n')
+    print(f'Object:{object} =========================== Image-AUROC:{i_roc}\n')
 
     save_metric(metrics, dataset_classes[kwargs['dataset']], kwargs['class_name'],
-                kwargs['dataset'], csv_path)
+                kwargs['dataset'], kwargs["corruption"],kwargs["severity"],csv_path)
 
 
 def str2bool(v):

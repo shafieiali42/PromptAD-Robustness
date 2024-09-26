@@ -40,7 +40,7 @@ def fit(model,
 
     features1 = []
     features2 = []
-    for (data, mask, label, name, img_type) in train_data:
+    for (data, mask, label, name, img_type,corrupted_image) in train_data:
 
         data = [model.transform(Image.fromarray(cv2.cvtColor(f.numpy(), cv2.COLOR_BGR2RGB))) for f in data]
         data = torch.stack(data, dim=0).to(device)
@@ -127,7 +127,7 @@ def fit(model,
             gt_mask_list = []
             names = []         
             with torch.no_grad():
-                for (data, mask, label, name, img_type) in tst_ldr:
+                for (data, mask, label, name, img_type, corrupted_image) in tst_ldr:
 
                     # data = [model.transform(Image.fromarray(f.numpy())) for f in data]
                     # data = torch.stack(data, dim=0)
@@ -148,7 +148,7 @@ def fit(model,
                     scores_img += score_img
 
                 test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list, resolution=(args.resolution, args.resolution))
-                result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps))
+                result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps),result_key_name="i_roc")
 
                 if best_result_dict is None:
                     save_check_point(model, check_path)
@@ -199,7 +199,7 @@ def main(args):
     print(f'Object:{object} =========================== Image-AUROC:{i_roc}\n')
 
     save_metric(metrics, dataset_classes[kwargs['dataset']], kwargs['class_name'],
-                kwargs['dataset'], csv_path)
+                kwargs['dataset'],kwargs["corruption"],kwargs["severity"], csv_path)
 
 
 def str2bool(v):

@@ -32,7 +32,7 @@ def test(model,
     gt_mask_list = []
     names = []
 
-    for (data, mask, label, name, img_type) in dataloader:
+    for (data, mask, label, name, img_type,corrupted_image) in dataloader:
 
         data = [model.transform(Image.fromarray(f.numpy())) for f in data]
         data = torch.stack(data, dim=0)
@@ -50,7 +50,7 @@ def test(model,
         score_maps += score_map
 
     test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list, resolution=(args.resolution, args.resolution))
-    result_dict = metric_cal_pix(np.array(score_maps), gt_mask_list)
+    result_dict = metric_cal_pix(np.array(score_maps), gt_mask_list,result_key_name="p_roc")
 
     torch.save(model.state_dict(), check_path)
     if args.vis:
@@ -98,7 +98,7 @@ def main(args):
     print(f'Object:{object} =========================== Pixel-AUROC:{p_roc}\n')
 
     save_metric(metrics, dataset_classes[kwargs['dataset']], kwargs['class_name'],
-                kwargs['dataset'], csv_path)
+                kwargs['dataset'], kwargs["corruption"],kwargs["severity"],csv_path)
 
 
 def str2bool(v):

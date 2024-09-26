@@ -16,8 +16,33 @@ def calculate_max_f1(gt, scores):
     threshold = thresholds[index]
     return max_f1, threshold
 
-
-def metric_cal_img(img_scores, gt_list, map_scores=None):
+## From Anomaly Clip: calculates the AUPRO
+def cal_pro_score(masks, amaps, max_step=200, expect_fpr=0.3):
+    # ref: https://github.com/gudovskiy/cflow-ad/blob/master/train.py
+    binary_amaps = np.zeros_like(amaps, dtype=bool)
+    min_th, max_th = amaps.min(), amaps.max()
+    delta = (max_th - min_th) / max_step
+    pros, fprs, ths = [], [], []
+    for th in np.arange(min_th, max_th, delta):
+        binary_amaps[amaps <= th], binary_amaps[amaps > th] = 0, 1
+        pro = []
+        for binary_amap, mask in zip(binary_amaps, masks):
+            for region in measure.regionprops(measure.label(mask)):
+                tp_pixels = binary_amap[region.coords[:, 0], region.coords[:, 1]].sum()
+                pro.append(tp_pixels / region.area)
+        inverse_masks = 1 - masks
+        fp_pixels = np.logical_and(inverse_masks, binary_amaps).sum()
+        fpr = fp_pixels / inverse_masks.sum()
+        pros.append(np.array(pro).mean())
+        fprs.append(fpr)
+        ths.append(th)
+    pros, fprs, ths = np.array(pros), np.array(fprs), np.array(ths)
+    idxes = fprs < expect_fpr
+    fprs = fprs[idxes]
+    fprs = (fprs - fprs.min()) / (fprs.max() - fprs.min())
+    pro_auc = auc(fprs, pros[idxes])
+    return pro_auc
+def metric_cal_img(img_scores, gt_list,result_key_name, map_scores=None):
     # calculate image-level ROC AUC score
     max_map_scores = map_scores.reshape(map_scores.shape[0], -1).max(axis=1)
 
@@ -28,12 +53,13 @@ def metric_cal_img(img_scores, gt_list, map_scores=None):
     fpr, tpr, _ = roc_curve(gt_list, img_scores)
     img_roc_auc = roc_auc_score(gt_list, img_scores)
 
-    result_dict = {'i_roc': img_roc_auc * 100}
+    # result_dict = {'i_roc': img_roc_auc * 100}
+    result_dict = {result_key_name: img_roc_auc * 100}
 
     return result_dict
 
 
-def metric_cal_pix(map_scores, gt_mask_list):
+def metric_cal_pix(map_scores, gt_mask_list,result_key_name):
 
     gt_mask = np.asarray(gt_mask_list, dtype=int)
 
@@ -43,7 +69,8 @@ def metric_cal_pix(map_scores, gt_mask_list):
 
     # pro_auc_score = cal_pro_metric(gt_mask_list, map_scores, fpr_thresh=0.3)
 
-    result_dict = {'p_roc': per_pixel_rocauc * 100}
+    # result_dict = {'p_roc': per_pixel_rocauc * 100}
+    result_dict = {result_key_name: per_pixel_rocauc * 100}
 
     return result_dict
 

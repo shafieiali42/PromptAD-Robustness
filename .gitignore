@@ -1,4 +1,6 @@
 mvtec_anomaly_detection/*
+ViSA_anomaly_detection/*
+test_result/*
 *.pyc
 corrupted.jpg
 test_mvtex.py

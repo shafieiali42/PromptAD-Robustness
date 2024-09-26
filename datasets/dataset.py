@@ -48,7 +48,6 @@ class CLIPDataset(Dataset):
         corrupted_image=None
         if self.corruption_func!= None:
             corrupted_image=corrupt_image(img,self.corruption_func,severity=self.severity)
-            img=corrupted_image
             
 
         
@@ -66,4 +65,8 @@ class CLIPDataset(Dataset):
         img_name = f'{self.category}-{img_type}-{os.path.basename(img_path[:-4])}'
 
         # return img, gt, label, img_name, img_type
-        return img, gt, label, img_name, img_type
+        # img : (1024,1024,3) 0-255
+        # gt : (1024,1024)
+        #label: 0: good 1: bad
+        #img_type: good, bad
+        return img, gt, label, img_name, img_type,corrupted_image
