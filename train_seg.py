@@ -192,7 +192,7 @@ def main(args):
     print(f'Object:{object} =========================== Pixel-AUROC:{p_roc}\n')
 
     save_metric(metrics, dataset_classes[kwargs['dataset']], kwargs['class_name'],
-                kwargs['dataset'],kwargs['corruption'],kwargs['severity'], csv_path)
+                kwargs['dataset'],kwargs['corrupt'],kwargs['severity'], csv_path)
 
 
 def str2bool(v):
