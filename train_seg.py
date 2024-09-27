@@ -243,6 +243,11 @@ def get_args():
     # loss hyper parameter
     parser.add_argument("--lambda1", type=float, default=0.001)
 
+    # Corruption
+    parser.add_argument("--corrupt", type=str2bool, choices=[True, False], default=False)
+    parser.add_argument("--corruption", type=str, default="gaussian_noise")
+    parser.add_argument("--severity", type=int, default=1)
+
     args = parser.parse_args()
 
     return args
