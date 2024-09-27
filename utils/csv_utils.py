@@ -35,13 +35,13 @@ def write_results(results:dict, cur_class, total_classes, csv_path):
     df.to_csv(csv_path, header=True, float_format='%.2f')
 
 
-def save_metric(metrics, total_classes, class_name, dataset,corruption_type,severity, csv_path):
+def save_metric(metrics, total_classes, class_name, corrupt,dataset,corruption_type,severity, csv_path):
     # if dataset != 'mvtec':
     for indx in range(len(total_classes)):
         total_classes[indx] = f"{dataset}-{total_classes[indx]}"
     class_name = f"{dataset}-{class_name}"
     string_to_add=""
-    if corruption_type==None:
+    if not corrupt:
         string_to_add="no_curruption"
     else:
         string_to_add=f"{corruption_type}_{severity}"

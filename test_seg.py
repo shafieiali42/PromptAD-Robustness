@@ -97,8 +97,9 @@ def main(args):
     object = kwargs['class_name']
     print(f'Object:{object} =========================== Pixel-AUROC:{p_roc}\n')
 
+    # add kwargs["corrupt"] and check wiht if in this function
     save_metric(metrics, dataset_classes[kwargs['dataset']], kwargs['class_name'],
-                kwargs['dataset'], kwargs['corruption'],kwargs['severity'],csv_path)
+                kwargs['dataset'], kwargs['corrupt'],kwargs['corruption'],kwargs['severity'],csv_path)
 
 
 def str2bool(v):
