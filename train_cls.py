@@ -176,6 +176,7 @@ def main(args):
         device = f"cpu"
     kwargs['device'] = device
 
+
     # prepare the experiment dir
     _, csv_path, check_path = get_dir_from_args(TASK, **kwargs)
 

@@ -49,4 +49,5 @@ def save_metric(metrics, total_classes, class_name,dataset,corrupt,corruption_ty
     print(f"Metric: {metrics}")
     new_metrics = {f"{k}_{string_to_add}": v for k, v in metrics.items()}
     metrics=new_metrics
+    print(f"Metric: {metrics}")
     write_results(metrics, class_name, total_classes, csv_path)
