@@ -200,7 +200,7 @@ def main(args):
     print(f'Object:{object} =========================== Image-AUROC:{i_roc}\n')
 
     save_metric(metrics, dataset_classes[kwargs['dataset']], kwargs['class_name'],
-                kwargs['dataset'],kwargs['corrupt'],kwargs['severity'], csv_path)
+                kwargs['dataset'],kwargs['corruption'],kwargs['severity'], csv_path)
 
 
 def str2bool(v):
@@ -254,7 +254,7 @@ def get_args():
     parser.add_argument("--corrupt", type=str2bool, choices=[True, False], default=False)
     parser.add_argument("--corruption", type=str, default="gaussian_noise")
     parser.add_argument("--severity", type=int, default=1)
-    
+
     args = parser.parse_args()
 
     return args
