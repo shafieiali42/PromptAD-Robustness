@@ -11,7 +11,7 @@ def write_results(results:dict, cur_class, total_classes, csv_path):
             'impulse_noise_1','impulse_noise_2','impulse_noise_3']
 
     keys = [f"{a}_{b}" for a in type_of_metric for b in type_of_corruptions]
-
+    print(f"Keys: {keys}")
     if not os.path.exists(csv_path):
         df_all = None
         for class_name in total_classes:
@@ -35,7 +35,7 @@ def write_results(results:dict, cur_class, total_classes, csv_path):
     df.to_csv(csv_path, header=True, float_format='%.2f')
 
 
-def save_metric(metrics, total_classes, class_name, corrupt,dataset,corruption_type,severity, csv_path):
+def save_metric(metrics, total_classes, class_name,dataset,corrupt,corruption_type,severity, csv_path):
     # if dataset != 'mvtec':
     for indx in range(len(total_classes)):
         total_classes[indx] = f"{dataset}-{total_classes[indx]}"
@@ -46,6 +46,7 @@ def save_metric(metrics, total_classes, class_name, corrupt,dataset,corruption_t
     else:
         string_to_add=f"{corruption_type}_{severity}"
 
+    print(f"Metric: {metrics}")
     new_metrics = {f"{k}_{string_to_add}": v for k, v in metrics.items()}
     metrics=new_metrics
     write_results(metrics, class_name, total_classes, csv_path)
