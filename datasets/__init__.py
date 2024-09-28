@@ -39,7 +39,7 @@ def get_dataloader_from_args(phase,corruption_func=None,severity_level=None, **k
     # from PIL import Image
     # import random
     # random_indx=random.randint(0,len(dataset_inst))
-    # random_indx=87
+    # random_indx=0
     # image = Image.fromarray(dataset_inst[random_indx][0][:,:,::-1])
     # print(dataset_inst[random_indx][0][:,:,::-1].dtype)
     # image.save(f'test_result/image_{random_indx}.png')
@@ -58,6 +58,23 @@ def get_dataloader_from_args(phase,corruption_func=None,severity_level=None, **k
                                  num_workers=0)
 
 
+    # data = next(iter(data_loader))
+    # print(data[0].shape)
+    # from PIL import Image
+    # random_indx=10
+    # print("-"*80)
+    # print(data[0][0].shape)
+    
+    # image = Image.fromarray(data[0].numpy()[random_indx,:,:,::-1])
+    # # print(dataset_inst[random_indx][0][:,:,::-1].dtype)
+    # image.save(f'test_result/dataloader_image_{random_indx}.png')
+    # corrupted = Image.fromarray(data[5].numpy()[random_indx,:,:,::-1])
+    # # print(dataset_inst[random_indx][5][::,::-1].dtype)
+    # corrupted.save(f'test_result/data_loader_corrupted_{random_indx}_severity{severity_level}.png')
+    # # image = Image.fromarray(data[1][random_indx,:,:])
+    # # image.save(f'test_result/gt_{random_indx}_{data[random_indx][4]}.png')
+    # print("Done")
+    # exit()
     # debug_str = f"===> datasets: {kwargs['dataset']}, class name/len: {kwargs['class_name']}/{len(dataset_inst)}, batch size: {kwargs['batch_size']}"
     # # logger.info(debug_str)
 

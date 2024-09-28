@@ -15,14 +15,13 @@ def get_optimizer_from_args(model, lr, weight_decay, **kwargs) -> torch.optim.Op
 def get_lr_schedule(optimizer):
     return torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.95)
 
-
 def setup_seed(seed):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     np.random.seed(seed)
     random.seed(seed)
     torch.backends.cudnn.deterministic = True
-
+    torch.backends.cudnn.benchmark = False
 
 def get_dir_from_args(TASK, root_dir, **kwargs):
 
