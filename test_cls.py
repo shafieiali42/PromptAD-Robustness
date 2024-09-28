@@ -72,7 +72,10 @@ def test(model,
                                                              resolution=(args.resolution, args.resolution))
     
 
-    result_dict = metric_cal_img(np.array(scores_img), gt_list,"i_roc",np.array(score_maps))
+    # result_dict = metric_cal_img(np.array(scores_img), gt_list,np.array(score_maps))
+    result_dict= calc_cls_metrics(np.array(scores_img),gt_list,np.array(score_map))
+    print(f"Here is the metrics: {result_dict}")
+  
     # for i in range(len(all_labels)):
     #     if all_labels[i]==0:
     #         print(f"name: {all_names[i]}, type: {all_types[i]}, label: {all_labels[i]}, Score: {scores_img[i]}")

@@ -5,6 +5,8 @@ from loguru import logger
 from .dataset import CLIPDataset
 from .mvtec import load_mvtec, mvtec_classes
 from .visa import load_visa, visa_classes
+from utils.metrics import *
+from utils.eval_utils import *
 
 
 mean_train = [0.48145466, 0.4578275, 0.40821073]
@@ -58,21 +60,42 @@ def get_dataloader_from_args(phase,corruption_func=None,severity_level=None, **k
                                  num_workers=0)
 
 
-    # data = next(iter(data_loader))
-    # print(data[0].shape)
     # from PIL import Image
-    # random_indx=10
+    # import cv2
+    # data = next(iter(data_loader))
+    # image=data[0]
+    # mask=data[1]
+    # label=data[2]
+    # image_names=data[3]
+    # img_types=data[4]
+    # random_indx=1
     # print("-"*80)
-    # print(data[0][0].shape)
+
+    # print(img_types[1])
     
+    # anmap=cv2.imread("result/mvtec/k_4/imgs/carpet-color-000_PromptAD.jpg")
+    # anmap = cv2.cvtColor(anmap, cv2.COLOR_BGR2GRAY)
+    # print("--")
+    # print(anmap.shape)
+
+    # print(mask[0].shape)
+    # mask = cv2.resize(mask[0].numpy(), (400,400), interpolation=cv2.INTER_NEAREST)
+        
+  
+    # print(anmap.shape)
+    # print(mask.shape)
+
+    # print("pro score:") 
+    # print(cal_pro_score(np.array([mask]),np.array([anmap])))
+
     # image = Image.fromarray(data[0].numpy()[random_indx,:,:,::-1])
-    # # print(dataset_inst[random_indx][0][:,:,::-1].dtype)
-    # image.save(f'test_result/dataloader_image_{random_indx}.png')
+    # print(dataset_inst[random_indx][0][:,:,::-1].dtype)
+    # image.save(f'test_result/dataloader_image2_{random_indx}.png')
     # corrupted = Image.fromarray(data[5].numpy()[random_indx,:,:,::-1])
     # # print(dataset_inst[random_indx][5][::,::-1].dtype)
     # corrupted.save(f'test_result/data_loader_corrupted_{random_indx}_severity{severity_level}.png')
-    # # image = Image.fromarray(data[1][random_indx,:,:])
-    # # image.save(f'test_result/gt_{random_indx}_{data[random_indx][4]}.png')
+    # image = Image.fromarray(data[1][random_indx,:,:])
+    # image.save(f'test_result/gt_{random_indx}_{data[random_indx][4]}.png')
     # print("Done")
     # exit()
     # debug_str = f"===> datasets: {kwargs['dataset']}, class name/len: {kwargs['class_name']}/{len(dataset_inst)}, batch size: {kwargs['batch_size']}"

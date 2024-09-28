@@ -6,6 +6,10 @@ def write_results(results:dict, cur_class, total_classes, csv_path):
     total_classes=total_classes+["mean"]
     keys_ = list(results.keys())
     type_of_metric=["i_roc","p_roc"]
+    print("Check for type of metrics:")
+    print(type_of_metric)
+    type_of_metric=list(results.keys())
+    print(type_of_metric)
     type_of_corruptions = ['no_curruption','shot_noise_1','shot_noise_2', 'shot_noise_3',
             'gaussian_noise_1', 'gaussian_noise_2','gaussian_noise_3',
             'impulse_noise_1','impulse_noise_2','impulse_noise_3']
