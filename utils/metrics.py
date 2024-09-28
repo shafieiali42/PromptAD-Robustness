@@ -39,14 +39,14 @@ def cal_pro_score(masks, amaps, max_step=200, expect_fpr=0.3):
         binary_amaps[amaps <= th], binary_amaps[amaps > th] = 0, 1
         pro = []
         for binary_amap, mask in zip(binary_amaps, new_masks):
-            print(f"mask type: {type(mask)}")
-            print(f"mask shape: {mask.shape}")
-            print(f"binary_amaps shape: {binary_amap.shape}")
+            # print(f"mask type: {type(mask)}")
+            # print(f"mask shape: {mask.shape}")
+            # print(f"binary_amaps shape: {binary_amap.shape}")
             for region in measure.regionprops(measure.label(mask)):
                 tp_pixels = binary_amap[region.coords[:, 0], region.coords[:, 1]].sum()
                 pro.append(tp_pixels / region.area)
         inverse_masks = 1 - new_masks
-        print(f"Inverse mask shape: {inverse_masks.shape}")
+        # print(f"Inverse mask shape: {inverse_masks.shape}")
         fp_pixels = np.logical_and(inverse_masks, binary_amaps).sum()
         fpr = fp_pixels / inverse_masks.sum()
         pros.append(np.array(pro).mean())
