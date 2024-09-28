@@ -18,9 +18,9 @@ def calculate_max_f1(gt, scores):
     
 
 
-def calc_cls_metrics(img_scores, gt_list,map_scores=None):
+def calc_cls_metrics(img_scores, gt_list,gt_mask_list,map_scores=None):
     image_roc = metric_cal_img(img_scores,gt_list,map_scores)["i_roc"]
-    pixel_pro=cal_pro_score(gt_list,map_scores)
+    pixel_pro=cal_pro_score(gt_mask_list,map_scores)
     result_dict = {'i_roc': image_roc,
                    'pixel_pro':pixel_pro}
     return result_dict
@@ -28,6 +28,7 @@ def calc_cls_metrics(img_scores, gt_list,map_scores=None):
 
 ## From Anomaly Clip: calculates the AUPRO
 def cal_pro_score(masks, amaps, max_step=200, expect_fpr=0.3):
+    new_masks = np.stack(masks, axis=0)
     # ref: https://github.com/gudovskiy/cflow-ad/blob/master/train.py
     binary_amaps = np.zeros_like(amaps, dtype=bool)
     min_th, max_th = amaps.min(), amaps.max()
@@ -37,14 +38,15 @@ def cal_pro_score(masks, amaps, max_step=200, expect_fpr=0.3):
     for th in np.arange(min_th, max_th, delta):
         binary_amaps[amaps <= th], binary_amaps[amaps > th] = 0, 1
         pro = []
-        for binary_amap, mask in zip(binary_amaps, masks):
+        for binary_amap, mask in zip(binary_amaps, new_masks):
             print(f"mask type: {type(mask)}")
             print(f"mask shape: {mask.shape}")
-            print(f"binary_amaps shape: {binary_amaps.shape}")
+            print(f"binary_amaps shape: {binary_amap.shape}")
             for region in measure.regionprops(measure.label(mask)):
                 tp_pixels = binary_amap[region.coords[:, 0], region.coords[:, 1]].sum()
                 pro.append(tp_pixels / region.area)
-        inverse_masks = 1 - masks
+        inverse_masks = 1 - new_masks
+        print(f"Inverse mask shape: {inverse_masks.shape}")
         fp_pixels = np.logical_and(inverse_masks, binary_amaps).sum()
         fpr = fp_pixels / inverse_masks.sum()
         pros.append(np.array(pro).mean())

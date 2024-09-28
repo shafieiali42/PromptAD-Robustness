@@ -150,7 +150,7 @@ def fit(model,
 
                 test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list, resolution=(args.resolution, args.resolution))
                 # result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps))
-                result_dict= calc_cls_metrics(np.array(scores_img),gt_list,np.array(score_map))
+                result_dict= calc_cls_metrics(np.array(scores_img),gt_list,gt_mask_list,np.array(score_map))
                 if best_result_dict is None:
                     save_check_point(model, check_path)
                     best_result_dict = result_dict

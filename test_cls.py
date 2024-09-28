@@ -73,7 +73,7 @@ def test(model,
     
 
     # result_dict = metric_cal_img(np.array(scores_img), gt_list,np.array(score_maps))
-    result_dict= calc_cls_metrics(np.array(scores_img),gt_list,np.array(score_map))
+    result_dict= calc_cls_metrics(np.array(scores_img),gt_list,gt_mask_list,np.array(score_map))
     print(f"Here is the metrics: {result_dict}")
   
     # for i in range(len(all_labels)):
