@@ -22,7 +22,7 @@ def calc_cls_metrics(img_scores, gt_list,gt_mask_list,map_scores=None):
     image_roc = metric_cal_img(img_scores,gt_list,map_scores)["i_roc"]
     pixel_pro=cal_pro_score(gt_mask_list,map_scores)
     result_dict = {'i_roc': image_roc,
-                   'pixel_pro':pixel_pro}
+                   'pixel_pro':pixel_pro*100}
     return result_dict
 
 
@@ -30,7 +30,7 @@ def calc_seg_metrics(gt_mask_list,map_scores):
     pixel_roc=metric_cal_pix(map_scores, gt_mask_list)["p_roc"]
     pixel_pro=cal_pro_score(gt_mask_list,map_scores)
     result_dict = {'p_roc': pixel_roc,
-                   'pixel_pro':pixel_pro}
+                   'pixel_pro':pixel_pro*100}
     return result_dict
 
 

@@ -7,7 +7,7 @@ import random
 
 mvtec_classes = ['carpet', 'grid', 'leather', 'tile', 'wood',
                    'bottle', 'cable', 'capsule', 'hazelnut', 'metal_nut', 'pill',
-                   'screw', ' ', 'transistor', 'zipper']
+                   'screw', 'toothbrush', 'transistor', 'zipper']
 
 
 
