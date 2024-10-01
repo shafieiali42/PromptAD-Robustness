@@ -285,7 +285,6 @@ class CustomTextCLIP(nn.Module):
         self.text.set_grad_checkpointing(enable)
 
     def encode_image(self, image, normalize: bool = False):
-        print(image.size())
         features = self.visual(image)
         return F.normalize(features, dim=-1) if normalize else features
 

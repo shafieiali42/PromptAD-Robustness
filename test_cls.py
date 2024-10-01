@@ -74,7 +74,6 @@ def test(model,
 
     # result_dict = metric_cal_img(np.array(scores_img), gt_list,np.array(score_maps))
     result_dict= calc_cls_metrics(np.array(scores_img),gt_list,gt_mask_list,np.array(score_map))
-    print(f"Here is the metrics: {result_dict}")
   
     # for i in range(len(all_labels)):
     #     if all_labels[i]==0:
@@ -122,8 +121,11 @@ def main(args):
     metrics = test(model, args, test_dataloader, device, img_dir=img_dir, check_path=check_path)
 
     i_roc = round(metrics['i_roc'], 2)
+    pixel_pro = round(metrics['pixel_pro'], 2)
     object = kwargs['class_name']
     print(f'Object:{object} =========================== Image-AUROC:{i_roc}\n')
+    print(f'Object:{object} =========================== Pixel-Pro:{pixel_pro}\n')
+
 
     save_metric(metrics, dataset_classes[kwargs['dataset']], kwargs['class_name'],
                 kwargs['dataset'],kwargs['corrupt'], kwargs['corruption'],kwargs['severity'],csv_path)

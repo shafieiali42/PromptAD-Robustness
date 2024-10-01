@@ -26,8 +26,17 @@ def calc_cls_metrics(img_scores, gt_list,gt_mask_list,map_scores=None):
     return result_dict
 
 
+def calc_seg_metrics(gt_mask_list,map_scores):
+    pixel_roc=metric_cal_pix(map_scores, gt_mask_list)["p_roc"]
+    pixel_pro=cal_pro_score(gt_mask_list,map_scores)
+    result_dict = {'p_roc': pixel_roc,
+                   'pixel_pro':pixel_pro}
+    return result_dict
+
+
 ## From Anomaly Clip: calculates the AUPRO
 def cal_pro_score(masks, amaps, max_step=200, expect_fpr=0.3):
+    print("Calculating pro-pixel")
     new_masks = np.stack(masks, axis=0)
     # ref: https://github.com/gudovskiy/cflow-ad/blob/master/train.py
     binary_amaps = np.zeros_like(amaps, dtype=bool)

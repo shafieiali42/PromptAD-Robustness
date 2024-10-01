@@ -50,7 +50,8 @@ def test(model,
         score_maps += score_map
 
     test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list, resolution=(args.resolution, args.resolution))
-    result_dict = metric_cal_pix(np.array(score_maps), gt_mask_list)
+    # result_dict = metric_cal_pix(np.array(score_maps), gt_mask_list)
+    result_dict = calc_seg_metrics(gt_mask_list,np.array(score_maps))
 
     torch.save(model.state_dict(), check_path)
     if args.vis:
@@ -94,8 +95,10 @@ def main(args):
     metrics = test(model, args, test_dataloader, device, img_dir=img_dir, check_path=check_path)
 
     p_roc = round(metrics['p_roc'], 2)
+    pixel_pro = round(metrics['pixel_pro'], 2)
     object = kwargs['class_name']
     print(f'Object:{object} =========================== Pixel-AUROC:{p_roc}\n')
+    print(f'Object:{object} =========================== Pixel-Pro:{pixel_pro}\n')
 
     # add kwargs["corrupt"] and check wiht if in this function
     save_metric(metrics, dataset_classes[kwargs['dataset']], kwargs['class_name'],

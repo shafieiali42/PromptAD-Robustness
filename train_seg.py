@@ -138,14 +138,17 @@ def fit(model,
 
         test_imgs, score_maps, gt_mask_list = specify_resolution(test_imgs, score_maps, gt_mask_list, resolution=(args.resolution, args.resolution))
         result_dict = metric_cal_pix(np.array(score_maps), gt_mask_list)
+        # result_dict = calc_seg_metrics(gt_mask_list,np.array(score_maps))
 
         if best_result_dict is None:
+            result_dict = calc_seg_metrics(gt_mask_list,np.array(score_maps))
             best_result_dict = result_dict
             save_check_point(model, check_path)
             if args.vis:
                 plot_sample_cv2(names, test_imgs, {'PromptAD': score_maps}, gt_mask_list, save_folder=img_dir)
 
         elif best_result_dict['p_roc'] < result_dict['p_roc']:
+            result_dict = calc_seg_metrics(gt_mask_list,np.array(score_maps))
             best_result_dict = result_dict
             save_check_point(model, check_path)
             if args.vis:
@@ -188,8 +191,10 @@ def main(args):
     metrics = fit(model, args, test_dataloader, device, img_dir=img_dir, check_path=check_path, train_data=train_dataloader)
 
     p_roc = round(metrics['p_roc'], 2)
+    pixel_pro = round(metrics['pixel_pro'], 2)
     object = kwargs['class_name']
     print(f'Object:{object} =========================== Pixel-AUROC:{p_roc}\n')
+    print(f'Object:{object} =========================== Pixel-Pro:{pixel_pro}\n')
 
     save_metric(metrics, dataset_classes[kwargs['dataset']], kwargs['class_name'],
                 kwargs['dataset'],kwargs['corrupt'],kwargs['corruption'],kwargs['severity'], csv_path)

@@ -152,10 +152,12 @@ def fit(model,
                 result_dict = metric_cal_img(np.array(scores_img), gt_list, np.array(score_maps))
                 # result_dict= calc_cls_metrics(np.array(scores_img),gt_list,gt_mask_list,np.array(score_map))
                 if best_result_dict is None:
+                    result_dict= calc_cls_metrics(np.array(scores_img),gt_list,gt_mask_list,np.array(score_map))
                     save_check_point(model, check_path)
                     best_result_dict = result_dict
 
                 elif best_result_dict['i_roc'] < result_dict['i_roc']:
+                    result_dict= calc_cls_metrics(np.array(scores_img),gt_list,gt_mask_list,np.array(score_map))
                     save_check_point(model, check_path)
                     best_result_dict = result_dict
 
@@ -195,10 +197,12 @@ def main(args):
 
     # as the pro metric calculation is costly, we only calculate it in the last evaluation
     metrics = fit(model, args, test_dataloader, device, check_path=check_path, train_data=train_dataloader)
-    print(f"Here is the metrics: {metrics}")
     i_roc = round(metrics['i_roc'], 2)
+    pixel_pro = round(metrics['pixel_pro'], 2)
     object = kwargs['class_name']
     print(f'Object:{object} =========================== Image-AUROC:{i_roc}\n')
+    print(f'Object:{object} =========================== Pixel-Pro:{pixel_pro}\n')
+
 
     save_metric(metrics, dataset_classes[kwargs['dataset']], kwargs['class_name'],
                 kwargs['dataset'],kwargs['corrupt'],kwargs['corruption'],kwargs['severity'], csv_path)

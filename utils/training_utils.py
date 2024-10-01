@@ -32,8 +32,8 @@ def get_dir_from_args(TASK, root_dir, **kwargs):
     check_dir = os.path.join(root_dir, f'{dataset}', f'k_{k_shot}', 'checkpoint')
     img_dir = os.path.join(root_dir, f'{dataset}', f'k_{k_shot}', 'imgs')
 
-    csv_path = os.path.join(csv_dir, f"Seed_{kwargs['seed']}-results.csv")
-    check_path = os.path.join(check_dir, f"{TASK}-Seed_{kwargs['seed']}-{kwargs['class_name']}-k_{k_shot}-check_point.pt")
+    csv_path = os.path.join(csv_dir, f"Seed_{kwargs['seed']}-{dataset}-{k_shot}-results.csv")
+    check_path = os.path.join(check_dir, f"{TASK}-Seed-{kwargs['seed']}-{kwargs['class_name']}-k_{k_shot}-check_point.pt")
 
     os.makedirs(root_dir, exist_ok=True)
     os.makedirs(csv_dir, exist_ok=True)
