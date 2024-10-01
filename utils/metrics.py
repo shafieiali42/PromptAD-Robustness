@@ -36,7 +36,7 @@ def calc_seg_metrics(gt_mask_list,map_scores):
 
 ## From Anomaly Clip: calculates the AUPRO
 def cal_pro_score(masks, amaps, max_step=200, expect_fpr=0.3):
-    print("Calculating pro-pixel")
+    # print("Calculating pro-pixel")
     new_masks = np.stack(masks, axis=0)
     # ref: https://github.com/gudovskiy/cflow-ad/blob/master/train.py
     binary_amaps = np.zeros_like(amaps, dtype=bool)
