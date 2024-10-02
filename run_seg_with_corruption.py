@@ -33,9 +33,9 @@ if __name__ == '__main__':
                                                 f'--dataset {dataset} ' \
                                                 f'--k-shot {shot} ' \
                                                 f'--class_name {cls} ' \
-                                                f'--corrupt true'\
-                                                f'--corruption {corruption}'\
-                                                f'--severity {severity}'\
+                                                f'--corrupt true '\
+                                                f'--corruption {corruption} '\
+                                                f'--severity {severity} '\
 
                                     print(sh_method)
                                     pool.apply_async(os.system, (sh_method,))
